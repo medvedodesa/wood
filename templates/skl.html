@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<html>
+    <body><div style="text-align:center;">
+         <table style="" width="30%" border="0" align="center" ><br><hr><h2>Товарные остатки</h2><hr>
+         <thead>
+            <tr align="left">
+                <th width="15%">ID</th>
+                <th width="75%">Тип </th>
+                <th width="15%">Количество</th>
+            </tr>
+                 </thead>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.pcs }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <table style="" width="30%" border="0" align="center">
+         <thead>
+            <tr align="left">
+                <th width="15%">ID</th>
+                <th width="75%">Материал </th>
+                <th width="15%">куб.м.</th>
+
+            </tr><br><hr><h2>Материал остатки</h2><hr>
+         </thead>
+            {% for item in items2 %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.obj }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <table style="" width="30%" border="0" align="center">
+         <thead>
+            <tr align="left">
+                <th width="15%">ID</th>
+                <th width="75%">Тип </th>
+                <th width="15%">Количество</th>
+
+            </tr><br><hr><h2>Брак остатки</h2><hr>
+         </thead>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.pcs_brak }}</td>
+            </tr>
+            {% endfor %}
+        </table></div>
+    </body>
+</html>
+{% endblock %}

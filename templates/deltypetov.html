@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="p1">
+        <h3>Удалить тип товара</h3>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+        <p>
+            {{ form.type.label }}<br>
+            {{ form.type }}<br>
+        </p>
+        <p>{{ form.ja_ne_debil_i_ponial() }} {{ form.ja_ne_debil_i_ponial.label }}</p>
+        <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+{% endblock %}

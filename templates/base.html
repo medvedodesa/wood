@@ -1,0 +1,81 @@
+<html>
+    <head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+
+
+<header>
+  <a href="" class="logo">Stanislav Wood Factory storage</a>
+  <nav>
+    <ul class="topmenu">
+{#      <li><a href="{{ url_for('index') }}" class="">Home</a></li>#}
+          {% if current_user.is_anonymous %}
+      <li><a href="{{ url_for('login') }}" class="">Войти</a></li>
+          {% else %}
+        <li><a href="" class="submenu-link">Профиль</a>
+        <ul class="submenu">
+          <li><a href="{{ url_for('user', username=current_user.username) }}">Ваш профиль</a></li>
+          <li><a href="{{ url_for('logout') }}" class="">Выйти</a></li>
+        </ul>
+      </li>
+      <li><a href="" class="submenu-link">Товары / Материалы</a>
+        <ul class="submenu">
+          <li><a href="{{ url_for('addmat') }}" class="">Поступление материал</a></li>
+          <li><a href="{{ url_for('addtov') }}" class="">Поступление товара</a>&emsp;</li>
+          <li><a href="{{ url_for('addtypemat') }}" class="">Добавить тип материала</a></li>
+          <li><a href="{{ url_for('addtypetov') }}" class="">Добавить тип товара</a></li>
+          <li><a href="{{ url_for('deltypetov') }}" class="">Удалить тип товара</a></li>
+        </ul>
+      </li>
+      <li><a href="" class="submenu-link">Статистика</a>
+        <ul class="submenu">
+          <li><a href="" class="">Don`t work</a>&emsp;</li>
+{#          <li><a href="{{ url_for('addtypetov') }}" class="">Добавить тип товара</a></li>#}
+{#          <li><a href="{{ url_for('tov') }}" class="">Товар в наличии</a></li>#}
+        </ul>
+      </li>
+      <li><a href="" class="submenu-link">Склад</a>
+        <ul class="submenu">
+          <li><a href="{{ url_for('skl') }}" class="">Общие складские остатки</a>&emsp;</li>
+          <li><a href="{{ url_for('mat') }}" class="">Материал на складе</a></li>
+          <li><a href="{{ url_for('tov') }}" class="">Товар на складе</a></li>
+          <li><a href="{{ url_for('selltov') }}" class="">Отгрузить товар</a></li>
+          <li><a href="{{ url_for('delbrak') }}" class="">Списание брака</a></li>
+          <li><a href="{{ url_for('delmat') }}" class="">Списать материал</a></li>
+        </ul>
+      </li>
+      <li><a href="" class="submenu-link">Производство</a>
+        <ul class="submenu">
+          <li><a href="{{ url_for('factadd') }}" class="">Добавить произведенное</a>&emsp;</li>
+          <li><a href="{{ url_for('brakadd') }}" class="">Добавить брак</a></li>
+        </ul>
+      </li>
+
+            {% endif %}
+    </ul>
+  </nav>
+</header>
+
+
+
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+{#    <div id="footer">#}
+{#      {% block footer %}#}
+{#      &copy; Copyright 2010 by Ivy Bell</a>.#}
+{#      {% endblock %}#}
+{#    </div>#}
+    </body>
+</html>
+

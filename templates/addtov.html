@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}<div class="p1">
+<h3>Добавить товар</h3>
+     <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.type.label }}<br>
+            {{ form.type }}<br>
+            {% for error in form.type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+             <p>
+            {{ form.pcs.label }}<br>
+            {{ form.pcs }}<br>
+            {% for error in form.pcs.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+         <p>{{ form.submit() }}</p></form></div>
+{% endblock %}

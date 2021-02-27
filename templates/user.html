@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}<div class="p1">
+    <table>
+        <tr valign="top">
+
+            <td>
+                <h3>Пользователь: {{ user.username }}</h3>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p>Последний раз был: {{ user.last_seen }}</p>{% endif %}
+                {% if user == current_user %}
+                <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+                {% endif %}
+            </td>
+        </tr>
+    </table></div>
+
+{% endblock %}

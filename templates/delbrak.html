@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}<div class="p1">
+<h3>Списать брак</h3>
+     <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.type.label }}<br>
+            {{ form.type }}<br>
+            {% for error in form.type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.pcs_brak.label }}<br>
+            {{ form.pcs_brak }}<br>
+            {% for error in form.pcs_brak.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+         <p>{{ form.submit() }}</p></form></div>
+{% endblock %}

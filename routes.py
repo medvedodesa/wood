@@ -12,6 +12,10 @@ from forms import RegistrationForm, EditProfileForm, TovarNewForm, MaterNewForm,
     MaterAdd, TovarAdd, MaterDel, TovarSell, FactAdd, BrakAdd, BrakDel, TovarTypeDel
 from app import db
 
+obosn = ['Нельзя списать больше наличия - ', 'Подтвердите что вы поняли смысл операции!',
+         'Нельзя отгрузить больше наличия - ', 'Нельзя произвести больше чем есть материала, добавьте материал',
+         'Нельзя произвести больше чем есть материала', 'Нельзя отгрузить больше наличия - ',]
+
 
 @app.before_request
 def before_request():
@@ -19,8 +23,9 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
+    # Эта функция позволит создать новый материал и сохранить его в базе данных.
 
-# Эта функция позволит создать новый материал и сохранить его в базе данных.
+
 @app.route('/addtypemat', methods=['GET', 'POST'])
 def addtypemat():
     form = MaterNewForm()
@@ -55,6 +60,7 @@ def mat():
 # Эта функция выполняет списание материала, проверку наличия такого количества
 @app.route('/delmat', methods=['GET', 'POST'])
 def delmat():
+    global obosn
     form = MaterDel()
     if form.validate_on_submit():
         z = form.type.data
@@ -63,7 +69,7 @@ def delmat():
             db.session.commit()
             return redirect(url_for('mat'))
         else:
-            x = 'Нельзя списать больше наличия - ' + str(z.obj) + ' куб.м.'
+            x = obosn[0] + str(z.obj) + ' куб.м.'
             flash(x)
             return render_template('delmat.html', form=form)
 
@@ -87,17 +93,18 @@ def addtypetov():
 # Эта функция удаляет тип товара!!!
 @app.route('/deltypetov', methods=['GET', 'POST'])
 def deltypetov():
+    global obosn
     form = TovarTypeDel()
     if form.validate_on_submit():
         if form.ja_ne_debil_i_ponial.data is True:
-            x=form.type.data
-            z=x.type
+            x = form.type.data
+            z = x.type
             ob = Tovar.query.filter_by(type=z).first()
             db.session.delete(ob)
             db.session.commit()
             return redirect(url_for('tov'))
         else:
-            flash('Подтвердите что вы поняли смысл операции!')
+            flash(obosn[1])
             return render_template('deltypetov.html', form=form)
     else:
         return render_template('deltypetov.html', form=form)
@@ -119,6 +126,7 @@ def addtov():
 # Эта функция выполняет отгрузку товара, проверку наличия такого количества
 @app.route('/selltov', methods=['GET', 'POST'])
 def selltov():
+    global obosn
     form = TovarSell()
     if form.validate_on_submit():
         z = form.type.data
@@ -127,7 +135,7 @@ def selltov():
             db.session.commit()
             return redirect(url_for('tov'))
         else:
-            x = 'Нельзя отгрузить больше наличия - ' + str(z.pcs) + ' шт.'
+            x = obosn[2] + str(z.pcs) + ' шт.'
             flash(x)
             return render_template('selltov.html', form=form)
 
@@ -144,13 +152,15 @@ def tov():
 # Эта функция выводит остатки товара и материала на складе.
 @app.route('/skl')
 def skl():
-    return render_template('skl.html', items=Tovar.query.order_by(Tovar.type).all(), items2=Mater.query.order_by(Mater.type).all())
+    return render_template('skl.html', items=Tovar.query.order_by(Tovar.type).all(),
+                           items2=Mater.query.order_by(Mater.type).all())
 
 
 # Эта функция выполняет производство товара, проверку наличия такого количества
 # материала, добавление на склад и списание материала
 @app.route('/factadd', methods=['GET', 'POST'])
 def factadd():
+    global obosn
     form = FactAdd()
     if form.validate_on_submit():
         x = form.type.data
@@ -169,7 +179,7 @@ def factadd():
             db.session.commit()
             return redirect(url_for('skl'))
         else:
-            x = 'Нельзя произвести больше чем есть материала, добавьте материал'
+            x = obosn[3]
             flash(x)
             return render_template('addmat.html', form=form)
     else:
@@ -180,6 +190,7 @@ def factadd():
 # материала, добавление на склад и списание материала
 @app.route('/brakadd', methods=['GET', 'POST'])
 def brakadd():
+    global obosn
     form = BrakAdd()
     if form.validate_on_submit():
         x = form.type.data
@@ -195,16 +206,16 @@ def brakadd():
             db.session.commit()
             return redirect(url_for('skl'))
         else:
-            x = 'Нельзя произвести больше чем есть материала'
+            x = obosn[4]
             flash(x)
             return render_template('brakadd.html', form=form)
     else:
         return render_template('brakadd.html', form=form)
 
 
-
 @app.route('/delbrak', methods=['GET', 'POST'])
 def delbrak():
+    global obosn
     form = BrakDel()
     if form.validate_on_submit():
         z = form.type.data
@@ -213,13 +224,12 @@ def delbrak():
             db.session.commit()
             return redirect(url_for('skl'))
         else:
-            x = 'Нельзя отгрузить больше наличия - ' + str(z.pcs) + ' шт.'
+            x = obosn[5] + str(z.pcs) + ' шт.'
             flash(x)
             return render_template('delbrak.html', form=form)
 
     else:
         return render_template('delbrak.html', form=form)
-
 
 
 # Дальше идут функции авторизации и тд
